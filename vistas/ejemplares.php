@@ -1,18 +1,3 @@
-<?php
-session_start();
-
-$server = "localhost:3308";
-$user = "root";
-$pass = "";
-$base = "biblioteca";
-
-$dwes = mysqli_connect($server, $user, $pass, $base);
-$sql= "SELECT id, nombre, tipo, autor, idioma, editorial FROM ejemplar";
-$resultado = $dwes -> query($sql);
-
-$dwes->close();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,14 +15,14 @@ $dwes->close();
         <h1>Biblioteca</h1>
     </header>
     <main>
-      <?php include("../../navbar.php");?>
+      <?php include("../navbar.php");?>
       <h1 class="titulo">Catálogo</h1>
       <div class="tabla" >
           <div>
             <?php
                 if(isset($_SESSION['usuario'])){
                     if($_SESSION['usuario']['id_rol'] != 3){
-                        echo('<a href="formularioEjemplares.php" class="btn btn-success botonInsertar">Insertar</a>');
+                        echo('<a href="/controladores/controladorFormularioEjemplares.php" class="btn btn-success botonInsertar">Insertar</a>');
                     }
                 } 
             ?>
@@ -56,29 +41,30 @@ $dwes->close();
                             echo ("<th></th>");
                         }
                     }
-                    $res = $resultado -> fetch_All(MYSQLI_BOTH);
-                    foreach($res as $row)
-                        {
-                        echo '<tr>';
-                                echo "<td>". $row['id']. "</td>";
-                                echo "<td>". $row['nombre']. "</td>";
-                                echo "<td>". $row['tipo']. "</td>";
-                                echo "<td>". $row['autor']. "</td>";
-                                echo "<td>". $row['idioma']. "</td>";
-                                echo "<td>". $row['editorial']. "</td>";
-                                if(isset($_SESSION['usuario'])){
-                                if($_SESSION['usuario']['id_rol'] != 3){
-                                    echo "<td><a href='formularioEjemplares.php?id={$row['id']}' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>";
-                                    echo "<td><a href='eliminarEjemplares.php?id={$row['id']}' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>";
-                                }
-                                }
-                        echo '</tr>';
+                ?>
+                <?php foreach($array_ejemplares as $ejemplar) : ?>
+                    <tr>
+                        <td><?= $ejemplar->getId(); ?></td>
+                        <td><?= $ejemplar->getNombre(); ?></td>
+                        <td><?= $ejemplar->getTipo(); ?></td>
+                        <td><?= $ejemplar->getAutor(); ?></td>
+                        <td><?= $ejemplar->getIdioma(); ?></td>
+                        <td><?= $ejemplar->getEditorial(); ?></td>
+                    <?php    
+                        if(isset($_SESSION['usuario'])){
+                            if($_SESSION['usuario']['id_rol'] != 3){ 
+                            ?>
+                                <td><a href='/controladores/controladorFormularioEjemplares.php?id=<?= $ejemplar->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
+                                <td><a href='/controladores/controladorEliminarEjemplares.php?id=<?= $ejemplar->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>
+                            <?php 
+                            }
                         }
-                        echo '</table>';
-              ?>
+                    ?>
+                    </tr>
+              <?php endforeach; ?>
           </table>
       </div>
     </main>
-    <?php include("../../vistas/footer.php");?>
+    <?php include("footer.php");?>
 </body>
 </html>

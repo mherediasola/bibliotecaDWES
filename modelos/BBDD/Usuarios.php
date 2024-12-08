@@ -1,5 +1,6 @@
 <?php 
 include("BaseDeDatos.php");
+require_once(__DIR__ . "/../pojos/Usuario.php");
 class Usuarios implements BaseDeDatos{
     //atributos
     private $conexion;
@@ -31,24 +32,33 @@ class Usuarios implements BaseDeDatos{
         $consulta = "SELECT * FROM usuario WHERE id = $id";
         $resultado = $this->conexion->query($consulta);
         $usuarios = $resultado->fetch_All(MYSQLI_BOTH);
-        return $usuarios;
+        $usuarios = $usuarios[0];
+        $usuario = new Usuario();
+        $usuario->setId($usuarios['id']);
+        $usuario->setIdRol($usuarios['id_rol']);
+        $usuario->setUsuario($usuarios['usuario']);
+        $usuario->setClave($usuarios['clave']);
+        $usuario->setNombre($usuarios['nombre']);
+        $usuario->setApellidos($usuarios['apellidos']);
+        $usuario->setEmail($usuarios['email']);
+        return $usuario;
     }
 
-    public function insertar($id_rol, $usuario, $clave, $nombre, $apellidos, $email){
-        $consulta="INSERT INTO usuario(id_rol, usuario, clave, nombre, apellidos, email) VALUES ($id_rol, '$usuario', '$clave', '$nombre', '$apellidos', '$email')";
+    public function insertar($usuario){
+        $consulta="INSERT INTO usuario(id_rol, usuario, clave, nombre, apellidos, email) VALUES ({$usuario->getIdRol()}, '{$usuario->getUsuario()}', '{$usuario->getClave()}', '{$usuario->getNombre()}', '{$usuario->getApellidos()}', '{$usuario->getEmail()}')";
         $this->conexion->query($consulta);
     }
 
-    public function editar($id, $id_rol, $usuario, $clave, $nombre, $apellidos, $email)
+    public function editar($usuario)
     {
-        $consulta= "UPDATE usuario SET (id_rol= $id_rol, usuario='$usuario', clave= '$clave', nombre= '$nombre', apellidos = '$apellidos', email = '$email' WHERE id = $id";
+        $consulta= "UPDATE usuario SET id_rol={$usuario->getIdRol()}, usuario='{$usuario->getUsuario()}', clave='{$usuario->getClave()}', nombre='{$usuario->getNombre()}', apellidos='{$usuario->getApellidos()}', email='{$usuario->getEmail()}' WHERE id = {$usuario->getId()}";
         $this->conexion->query($consulta);
         
     }
 
-    public function eliminar($id)
+    public function eliminar($usuario)
     {
-        $consulta= "DELETE FROM usuario WHERE id = $id";
+        $consulta= "DELETE FROM usuario WHERE id = {$usuario->getId()}";
         $this->conexion->query($consulta);
     }
 

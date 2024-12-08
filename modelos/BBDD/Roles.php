@@ -39,27 +39,28 @@ class Roles implements BaseDeDatos{
         $consulta = "SELECT * FROM rol WHERE id = $id";
         $resultado = $this->conexion->query($consulta);
         $roles = $resultado->fetch_All(MYSQLI_BOTH);
-        if(count($roles) == 1){
-            $roles = $roles[0];
-        }
-        return $roles;
+        $roles = $roles[0];
+        $rol = new Rol();
+        $rol->setId($roles['id']);
+        $rol->setTipo($roles['tipo']);
+        return $rol;
     }
 
-    public function insertar($tipo){
-        $consulta="INSERT INTO rol(tipo) VALUES ('$tipo')";
+    public function insertar($rol){
+        $consulta="INSERT INTO rol(tipo) VALUES ('{$rol->getTipo()}')";
         $this->conexion->query($consulta);
     }
 
-    public function editar($tipo, $id)
+    public function editar($rol)
     {
-        $consulta= "UPDATE rol SET tipo='$tipo' WHERE id = $id";
+        $consulta= "UPDATE rol SET tipo='{$rol->getTipo()}' WHERE id = {$rol->getId()}";
         $this->conexion->query($consulta);
         
     }
 
-    public function eliminar($id)
+    public function eliminar($rol)
     {
-        $consulta= "DELETE FROM rol WHERE id = $id";
+        $consulta= "DELETE FROM rol WHERE id = {$rol->getId()}";
         $this->conexion->query($consulta);
     }
 

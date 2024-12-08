@@ -1,5 +1,6 @@
 <?php 
 include("BaseDeDatos.php");
+require_once(__DIR__ . "/../pojos/Ejemplar.php");
 class Ejemplares implements BaseDeDatos{
     //atributos
     private $conexion;
@@ -23,7 +24,18 @@ class Ejemplares implements BaseDeDatos{
         $consulta = "SELECT * FROM ejemplar";
         $resultado = $this->conexion->query($consulta);
         $ejemplares= $resultado->fetch_All(MYSQLI_BOTH);
-        return $ejemplares;
+        $array_ejemplares = array();
+        foreach($ejemplares as $ejemplar){
+            $tmp = new Ejemplar();
+            $tmp->setId($ejemplar['id']);
+            $tmp->setNombre($ejemplar['nombre']);
+            $tmp->setTipo($ejemplar['tipo']);
+            $tmp->setAutor($ejemplar['autor']);
+            $tmp->setIdioma($ejemplar['idioma']);
+            $tmp->setEditorial($ejemplar['editorial']);
+            array_push($array_ejemplares, $tmp);
+        }
+        return $array_ejemplares;
     }
 
     public function consultarCoincideId($id)
@@ -31,24 +43,32 @@ class Ejemplares implements BaseDeDatos{
         $consulta = "SELECT * FROM ejemplar WHERE id = $id";
         $resultado = $this->conexion->query($consulta);
         $ejemplares = $resultado->fetch_All(MYSQLI_BOTH);
-        return $ejemplares;
+        $ejemplares = $ejemplares[0];
+        $ejemplar = new Ejemplar();
+        $ejemplar->setId($ejemplares['id']);
+        $ejemplar->setNombre($ejemplares['nombre']);
+        $ejemplar->setTipo($ejemplares['tipo']);
+        $ejemplar->setAutor($ejemplares['autor']);
+        $ejemplar->setIdioma($ejemplares['idioma']);
+        $ejemplar->setEditorial($ejemplares['editorial']);
+        return $ejemplar;
     }
 
-    public function insertar($nombre, $tipo, $autor, $idioma, $editorial){
-        $consulta="INSERT INTO ejemplar(nombre, tipo, autor, idioma, editorial) VALUES ('$nombre', $tipo, '$autor', '$idioma', '$editorial')";
+    public function insertar($ejemplar){
+        $consulta="INSERT INTO ejemplar(nombre, tipo, autor, idioma, editorial) VALUES ('{$ejemplar->getNombre()}', '{$ejemplar->getTipo()}', '{$ejemplar->getAutor()}', '{$ejemplar->getIdioma()}', '{$ejemplar->getEditorial()}')";
         $this->conexion->query($consulta);
     }
 
-    public function editar($id, $nombre, $tipo, $autor, $idioma, $editorial)
+    public function editar($ejemplar)
     {
-        $consulta= "UPDATE ejemplar SET nombre='$nombre', tipo=$tipo, autor= '$autor', idioma= '$idioma', editorial = '$editorial' WHERE id = $id";
+        $consulta= "UPDATE ejemplar SET nombre='{$ejemplar->getNombre()}', tipo='{$ejemplar->getTipo()}', autor= '{$ejemplar->getAutor()}', idioma= '{$ejemplar->getIdioma()}', editorial = '{$ejemplar->getEditorial()}' WHERE id = {$ejemplar->getId()}";
         $this->conexion->query($consulta);
         
     }
 
-    public function eliminar($id)
+    public function eliminar($ejemplar)
     {
-        $consulta= "DELETE FROM ejemplar WHERE id = $id";
+        $consulta= "DELETE FROM ejemplar WHERE id = {$ejemplar->getId()}";
         $this->conexion->query($consulta);
     }
 

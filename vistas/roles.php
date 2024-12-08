@@ -32,8 +32,8 @@
                 <tr>
                     <td><?= $rol->getId(); ?></td>
                     <td><?= $rol->getTipo(); ?></td>
-                    <td><a href='formularioRoles.php?id= <?= $rol->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
-                    <td><a href='eliminarRoles.php?id= <?= $rol->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>
+                    <td><a href='/controladores/controladorFormularioRoles.php?id=<?= $rol->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
+                    <td><a href='/controladores/controladorEliminarRoles.php?id=<?= $rol->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>
                 </tr>
                 <?php  endforeach; ?>
             </table>

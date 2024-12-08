@@ -1,5 +1,6 @@
 <?php 
 include("BaseDeDatos.php");
+require_once(__DIR__ . "/../pojos/Prestamo.php");
 class Prestamos implements BaseDeDatos{
     //atributos
     private $conexion;
@@ -31,24 +32,31 @@ class Prestamos implements BaseDeDatos{
         $consulta = "SELECT * FROM prestamo WHERE id = $id";
         $resultado = $this->conexion->query($consulta);
         $prestamos = $resultado->fetch_All(MYSQLI_BOTH);
-        return $prestamos;
+        $prestamos = $prestamos[0];
+        $prestamo = new Prestamo();
+        $prestamo->setId($prestamos['id']);
+        $prestamo->setIdUsuario($prestamos['id_usuario']);
+        $prestamo->setIdEjemplar($prestamos['id_ejemplar']);
+        $prestamo->setFecha($prestamos['fecha']);
+        $prestamo->setFechaFinal($prestamos['fecha_final']);
+        return $prestamo;
     }
 
-    public function insertar($id_usuario, $id_ejemplar, $fecha, $fecha_final){
-        $consulta="INSERT INTO prestamo(id_usuario, id_ejemplar, fecha, fecha_final) VALUES ($id_usuario, $id_ejemplar, '$fecha', '$fecha_final')";
+    public function insertar($prestamo){
+        $consulta="INSERT INTO prestamo(id_usuario, id_ejemplar, fecha, fecha_final) VALUES ({$prestamo->getIdUsuario()}, {$prestamo->getIdEjemplar()}, '{$prestamo->getFecha()}', '{$prestamo->getFechaFinal()}')";
         $this->conexion->query($consulta);
     }
 
-    public function editar($id, $id_usuario, $id_ejemplar, $fecha, $fecha_final)
+    public function editar($prestamo)
     {
-        $consulta= "UPDATE prestamo SET (id_usuario= $id_usuario, id_ejemplar= $id_ejemplar, fecha= '$fecha', fecha_final= '$fecha_final' WHERE id = $id";
+        $consulta= "UPDATE prestamo SET (id_usuario= {$prestamo->getIdUsuario()}, id_ejemplar= {$prestamo->getIdEjemplar()}, fecha= '{$prestamo->getFecha()}', fecha_final= '$prestamo->getFechaFinal()}' WHERE id = {$prestamo->getId()}";
         $this->conexion->query($consulta);
         
     }
 
-    public function eliminar($id)
+    public function eliminar($prestamo)
     {
-        $consulta= "DELETE FROM prestamo WHERE id = $id";
+        $consulta= "DELETE FROM prestamo WHERE id = {$prestamo->getId()}";
         $this->conexion->query($consulta);
     }
 

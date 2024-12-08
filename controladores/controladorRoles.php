@@ -8,15 +8,11 @@ if(isset($_SESSION['usuario'])){
   }
 }
 
-
 include("../modelos/BBDD/Roles.php");
-
 
 $roles = new Roles();
 $array_roles = $roles->consultarTodo();
 $roles->finalizarConexion();
-
-
 
 include("../vistas/roles.php");
 

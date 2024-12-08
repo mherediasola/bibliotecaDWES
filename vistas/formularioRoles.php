@@ -18,7 +18,7 @@
         <?php include("../navbar.php");?>
         <h3 class="titulo">Rol</h3>
         <div class="form mb-3 formulario col-2 mx-auto">
-            <form action="editarInsertar.php" method="post">
+            <form action="/controladores/controladorEditarInsertarRoles.php" method="post">
                 <input type="hidden" name="idRol" id="idRol" value="<?php if($rol){echo $rol->getId();}?>">
                 <label class="form-label" for="tipo">Tipo</label>
                 <input class="form-control" type="text" name="tipo" id="tipo" value="<?php if($rol){echo $rol->getTipo();}?>">

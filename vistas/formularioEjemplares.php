@@ -1,32 +1,3 @@
-<?php
-session_start();
-include("../../controladores/requireLoggin.php");
-
-if(isset($_SESSION['usuario'])){
-  if($_SESSION['usuario']['id_rol'] != 1){
-    header("Location:../../index.php");
-  }
-}
-
-$server = "localhost:3308";
-$user = "root";
-$pass = "";
-$base = "biblioteca";
-
-$dwes = mysqli_connect($server, $user, $pass, $base);
-
-$ejemplar="";
-if(isset($_REQUEST['id'])){
-    $id = $_REQUEST['id'];
-    $ejemplar = "SELECT * FROM ejemplar WHERE id = $id";
-    $ejemplar = $dwes -> query($ejemplar);
-    $ejemplar = $ejemplar -> fetch_All(MYSQLI_BOTH);
-    $ejemplar = $ejemplar[0];
-}
-
-$dwes->close();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,13 +15,13 @@ $dwes->close();
         <h1>Biblioteca</h1>
     </header>
     <main>
-        <?php include("../../navbar.php");?>
+        <?php include("../navbar.php");?>
         <h3 class="titulo">Ejemplar</h3>
         <div class="form mb-3 formulario col-2 mx-auto">
-            <form action="editarInsertar.php" method="post">
-                <input type="hidden" name="idEjemplar" id="idEjemplar" value="<?php if($ejemplar){echo $ejemplar['id'];}?>">
+            <form action="/controladores/controladorEditarInsertarEjemplares.php" method="post">
+                <input type="hidden" name="idEjemplar" id="idEjemplar" value="<?php if($ejemplar){echo $ejemplar->getId();}?>">
                 <label class="form-label" for="nombre">Nombre</label>
-                <input class="form-control" type="text" name="nombre" id="nombre" value="<?php if($ejemplar){echo $ejemplar['nombre'];}?>">
+                <input class="form-control" type="text" name="nombre" id="nombre" value="<?php if($ejemplar){echo $ejemplar->getNombre();}?>">
                 <label class="form-label" for="tipo">Tipo</label>
                 <select class="form-select" name="tipo" id="tipo">
                     <option value="libro" name="tipo" id="libro">Libro</option>
@@ -59,18 +30,18 @@ $dwes->close();
                     <option value="dvd" name="tipo" id="dvd">DVD</option>
                 </select>             
                 <label class="form-label" for="autor">Autor</label>
-                <input class="form-control" type="text" name="autor" id="autor" value="<?php if($ejemplar){echo $ejemplar['autor'];}?>">
+                <input class="form-control" type="text" name="autor" id="autor" value="<?php if($ejemplar){echo $ejemplar->getAutor();}?>">
                 
                 <label class="form-label" for="idioma">Idioma</label>
-                <input class="form-control" type="text" name="idioma" id="idioma" value="<?php if($ejemplar){echo $ejemplar['idioma'];}?>">
+                <input class="form-control" type="text" name="idioma" id="idioma" value="<?php if($ejemplar){echo $ejemplar->getIdioma();}?>">
                 
                 <label class="form-label" for="editorial">Editorial</label>
-                <input class="form-control" type="text" name="editorial" id="editorial" value="<?php if($ejemplar){echo $ejemplar['editorial'];}?>">
+                <input class="form-control" type="text" name="editorial" id="editorial" value="<?php if($ejemplar){echo $ejemplar->getEditorial();}?>">
                 
                 <button class="btn btn-primary my-3" type="submit">Enviar</button>
             </form>
         </div>
     </main>
-    <?php include("../../vistas/footer.php");?>
+    <?php include("footer.php");?>
 </body>
 </html>

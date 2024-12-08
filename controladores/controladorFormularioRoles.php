@@ -12,18 +12,12 @@ require_once("../modelos/pojos/Rol.php");
 $rol="";
 
 if(isset($_REQUEST['id'])){
-    $rol = new Rol();
-    $rol->setId($_REQUEST['id']);
     require_once("../modelos/BBDD/Roles.php");
     $roles = new Roles();
-    $res = $roles->consultarCoincideId($rol->getId());
+    $rol = $roles->consultarCoincideId($_REQUEST['id']);
     $roles->finalizarConexion();
-    if(!$res){
-        $rol = "";
-    }
+    
 }
-
-
 
 include("../vistas/formularioRoles.php");
 

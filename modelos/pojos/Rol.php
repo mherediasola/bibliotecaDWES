@@ -22,13 +22,10 @@ class Rol{
     }
 
     public function setTipo($tipo){
-        $this->id = $tipo;
+        $this->tipo = $tipo;
     }
 
 
 }
-
-
-
 
 ?>
