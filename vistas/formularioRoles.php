@@ -1,44 +1,3 @@
-<?php
-session_start();
-include("../../controladores/requireLoggin.php");
-
-if(isset($_SESSION['usuario'])){
-  if($_SESSION['usuario']['id_rol'] != 1){
-    header("Location:../../index.php");
-  }
-}
-
-// $server = "localhost:3308";
-// $user = "root";
-// $pass = "";
-// $base = "biblioteca";
-
-// $dwes = mysqli_connect($server, $user, $pass, $base);
-
-$id="";
-if(isset($_REQUEST['id'])){
-    $id = $_REQUEST['id'];
-    //     $rol = "SELECT * FROM rol WHERE id = $id";
-    //     $rol = $dwes -> query($rol);
-    //     $rol = $rol -> fetch_All(MYSQLI_BOTH);
-    //     $rol = $rol[0];
-    }
-
-// $dwes->close();
-
-include("../../modelos/BBDD/Roles.php");
-$roles = new Roles();
-
-$roles->consultarCoincideId($id);
-
-$array_roles = $roles->consultarTodo();
-
-$rol=$array_roles[0];
-
-$roles->finalizarConexion();
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,17 +15,17 @@ $roles->finalizarConexion();
         <h1>Biblioteca</h1>
     </header>
     <main>
-        <?php include("../../navbar.php");?>
+        <?php include("../navbar.php");?>
         <h3 class="titulo">Rol</h3>
         <div class="form mb-3 formulario col-2 mx-auto">
             <form action="editarInsertar.php" method="post">
-                <input type="hidden" name="idRol" id="idRol" value="<?php if($rol){echo $rol['id'];}?>">
+                <input type="hidden" name="idRol" id="idRol" value="<?php if($rol){echo $rol->getId();}?>">
                 <label class="form-label" for="tipo">Tipo</label>
-                <input class="form-control" type="text" name="tipo" id="tipo" value="<?php if($rol){echo $rol['tipo'];}?>">
+                <input class="form-control" type="text" name="tipo" id="tipo" value="<?php if($rol){echo $rol->getTipo();}?>">
                 <button class="btn btn-primary my-3" type="submit">Enviar</button>
             </form>
         </div>
     </main>
-    <?php include("../../vistas/footer.php");?>
+    <?php include("footer.php");?>
 </body>
 </html>

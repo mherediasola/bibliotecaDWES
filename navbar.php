@@ -21,7 +21,7 @@
                         </a>
                         <ul class="dropdown-menu">');
                             if($_SESSION['usuario']['id_rol'] == 1){
-                                echo('<li><a class="dropdown-item" href="/vistas/roles.php">Roles</a></li>
+                                echo('<li><a class="dropdown-item" href="/controladores/controladorRoles.php">Roles</a></li>
                                 <li><a class="dropdown-item" href="/paginas/usuarios/usuarios.php">Usuarios</a></li>');
                             }
                             echo('<li><a class="dropdown-item" href="/paginas/ejemplares/ejemplares.php">Catálogo</a></li>

@@ -19,7 +19,7 @@
         <h1 class="titulo">Roles</h1>
         <div class="tabla" >
             <div>
-              <a href="formularioRoles.php" class="btn btn-success botonInsertar">Insertar</a>
+              <a href="/controladores/controladorFormularioRoles.php" class="btn btn-success botonInsertar">Insertar</a>
             </div>
             <table class="tRoles table table-striped table-hover">
                 <tr>
@@ -28,7 +28,14 @@
                     <th></th>
                     <th></th>
                 </tr>
-                <?php include("../controladores/controladorRoles.php");?>
+                <?php foreach( $array_roles as $rol ) : ?>
+                <tr>
+                    <td><?= $rol->getId(); ?></td>
+                    <td><?= $rol->getTipo(); ?></td>
+                    <td><a href='formularioRoles.php?id= <?= $rol->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
+                    <td><a href='eliminarRoles.php?id= <?= $rol->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>
+                </tr>
+                <?php  endforeach; ?>
             </table>
         </div>
     </main>

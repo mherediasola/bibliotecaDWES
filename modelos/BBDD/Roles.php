@@ -1,5 +1,6 @@
 <?php 
 include("BaseDeDatos.php");
+require_once(__DIR__ . "/../pojos/Rol.php");
 class Roles implements BaseDeDatos{
     //atributos
     private $conexion;
@@ -23,16 +24,25 @@ class Roles implements BaseDeDatos{
         $consulta = "SELECT * FROM rol";
         $resultado = $this->conexion->query($consulta);
         $roles = $resultado->fetch_All(MYSQLI_BOTH);
-        return $roles;
+        $array_roles = array();
+        foreach($roles as $rol){
+            $tmp = new Rol();
+            $tmp->setId($rol['id']);
+            $tmp->setTipo($rol['tipo']);
+            array_push($array_roles, $tmp);
+        }
+        return $array_roles;
     }
 
     public function consultarCoincideId($id)
     {
         $consulta = "SELECT * FROM rol WHERE id = $id";
-        if($resultado = $this->conexion->query($consulta)){
-            $roles = $resultado->fetch_All(MYSQLI_BOTH);
-            return $roles;
+        $resultado = $this->conexion->query($consulta);
+        $roles = $resultado->fetch_All(MYSQLI_BOTH);
+        if(count($roles) == 1){
+            $roles = $roles[0];
         }
+        return $roles;
     }
 
     public function insertar($tipo){
