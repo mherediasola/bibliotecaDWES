@@ -22,11 +22,11 @@ class Usuario{
         $this->id = $id;
     }
     
-    public function getIdRol(){
+    public function getRol(){
         return $this->id_rol; 
     }
 
-    public function setIdRol($id_rol){
+    public function setRol($id_rol){
         $this->id_rol = $id_rol;
     }
     

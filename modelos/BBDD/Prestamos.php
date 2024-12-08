@@ -1,5 +1,5 @@
 <?php 
-include("BaseDeDatos.php");
+require_once("BaseDeDatos.php");
 require_once(__DIR__ . "/../pojos/Prestamo.php");
 class Prestamos implements BaseDeDatos{
     //atributos
@@ -19,26 +19,43 @@ class Prestamos implements BaseDeDatos{
         $this->conexion = new mysqli($this->server, $this->user, $this->pass, $this->base);
     }
 
+    //muestra toda la info de préstamos uniendo tres tablas
     public function consultarTodo()
     {
-        $consulta = "SELECT * FROM prestamo";
+        $consulta = "SELECT p.id, u.usuario, CONCAT(u.nombre, ' ', u.apellidos) AS Nombre, e.nombre AS Ejemplar, e.autor AS Autor, p.fecha AS Préstamo, p.fecha_final AS Vencimiento 
+        FROM ejemplar e JOIN prestamo p ON e.id = p.id_ejemplar
+        JOIN usuario u ON u.id = p.id_usuario";
         $resultado = $this->conexion->query($consulta);
         $prestamos= $resultado->fetch_All(MYSQLI_BOTH);
-        return $prestamos;
+        $array_prestamos = array();
+        foreach($prestamos as $prestamo){
+            $tmp = new Prestamo();
+            $tmp->setId($prestamo['id']);
+            $tmp->setUsuario($prestamo['usuario']);
+            $tmp->setNombreUsuario($prestamo['Nombre']);
+            $tmp->setEjemplar($prestamo['Ejemplar']);
+            $tmp->setAutor($prestamo['Autor']);
+            $tmp->setFecha($prestamo['Préstamo']);
+            $tmp->setFechaFinal($prestamo['Vencimiento']);
+            array_push($array_prestamos, $tmp);
+        }
+        return $array_prestamos;
     }
 
     public function consultarCoincideId($id)
     {
-        $consulta = "SELECT * FROM prestamo WHERE id = $id";
+        $consulta = "SELECT p.id, u.usuario, CONCAT(u.nombre, ' ', u.apellidos) AS Nombre, e.nombre AS Ejemplar, e.autor AS Autor, p.fecha AS Préstamo, p.fecha_final AS Vencimiento 
+        FROM ejemplar e JOIN prestamo p ON e.id = p.id_ejemplar
+        JOIN usuario u ON u.id = p.id_usuario WHERE p.id = $id";
         $resultado = $this->conexion->query($consulta);
         $prestamos = $resultado->fetch_All(MYSQLI_BOTH);
         $prestamos = $prestamos[0];
         $prestamo = new Prestamo();
         $prestamo->setId($prestamos['id']);
-        $prestamo->setIdUsuario($prestamos['id_usuario']);
-        $prestamo->setIdEjemplar($prestamos['id_ejemplar']);
-        $prestamo->setFecha($prestamos['fecha']);
-        $prestamo->setFechaFinal($prestamos['fecha_final']);
+        $prestamo->setNombreUsuario($prestamos['Nombre']);
+        $prestamo->setEjemplar($prestamos['Ejemplar']);
+        $prestamo->setFecha($prestamos['Préstamo']);
+        $prestamo->setFechaFinal($prestamos['Vencimiento']);
         return $prestamo;
     }
 

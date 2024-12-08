@@ -1,5 +1,5 @@
 <?php 
-include("BaseDeDatos.php");
+require_once("BaseDeDatos.php");
 require_once(__DIR__ . "/../pojos/Ejemplar.php");
 class Ejemplares implements BaseDeDatos{
     //atributos

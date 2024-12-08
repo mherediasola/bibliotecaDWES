@@ -22,17 +22,17 @@
                         <ul class="dropdown-menu">');
                             if($_SESSION['usuario']['id_rol'] == 1){
                                 echo('<li><a class="dropdown-item" href="/controladores/controladorRoles.php">Roles</a></li>
-                                <li><a class="dropdown-item" href="/paginas/usuarios/usuarios.php">Usuarios</a></li>');
+                                <li><a class="dropdown-item" href="/controladores/controladorUsuarios.php">Usuarios</a></li>');
                             }
                             echo('<li><a class="dropdown-item" href="/controladores/controladorEjemplares.php">Catálogo</a></li>
-                            <li><a class="dropdown-item" href="/paginas/prestamos/prestamos.php">Préstamos</a></li>
+                            <li><a class="dropdown-item" href="/controladores/controladorPrestamos.php">Préstamos</a></li>
                         </ul>
                         </li>');
                     }else{
-                        echo('<li ><a class="nav-link" href="/paginas/ejemplares/ejemplares.php">Catálogo</a></li>');
+                        echo('<li ><a class="nav-link" href="/controladores/controladorEjemplares.php">Catálogo</a></li>');
                     }
                 }else{
-                    echo('<li ><a class="nav-link" href="/paginas/ejemplares/ejemplares.php">Catálogo</a></li>');
+                    echo('<li ><a class="nav-link" href="/controladores/controladorEjemplares.php">Catálogo</a></li>');
                 }  
             ?>
             <li class="nav-item dropdown">
@@ -42,7 +42,7 @@
                     if(isset($_SESSION['usuario'])){
                         echo('<li><a class="dropdown-item" href="/paginas/miCuenta/cerrarSesion.php">Cerrar Sesión</a></li>');
                         if($_SESSION['usuario']['id_rol'] == 3){
-                            echo('<li><a class="dropdown-item" href="/paginas/prestamos/prestamos.php">Mis préstamos</a></li>');
+                            echo('<li><a class="dropdown-item" href="/controladores/controladorPrestamos.php">Mis préstamos</a></li>');
                         }
                     }else{
                         echo('<li><a class="dropdown-item" href="/paginas/miCuenta/registro.php">Registrarse</a></li>');

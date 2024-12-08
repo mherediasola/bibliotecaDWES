@@ -2,10 +2,15 @@
 
 class Prestamo{
     private $id;
-    private $id_usuario;
-    private $id_ejemplar;
+    private $usuario;
+    private $nombreUsuario;
+    private $ejemplar;
+    private $autor;
     private $fecha;
     private $fecha_final;
+    private $idUsuario;
+    private $idEjemplar;
+
 
     public function __construct()
     {
@@ -19,21 +24,37 @@ class Prestamo{
     public function setId($id){
         $this->id = $id;
     }
-    
-    public function getIdUsuario(){
-        return $this->id_usuario; 
+
+    public function getUsuario(){
+        return $this->usuario; 
     }
 
-    public function setIdUsuario($id_usuario){
-        $this->id_usuario = $id_usuario;
+    public function setUsuario($usuario){
+        $this->usuario = $usuario;
     }
     
-    public function getIdEjemplar(){
-        return $this->id_ejemplar; 
+    public function getNombreUsuario(){
+        return $this->nombreUsuario; 
     }
 
-    public function setIdEjemplar($id_ejemplar){
-        $this->id_ejemplar = $id_ejemplar;
+    public function setNombreUsuario($nombreUsuario){
+        $this->nombreUsuario = $nombreUsuario;
+    }
+    
+    public function getEjemplar(){
+        return $this->ejemplar; 
+    }
+
+    public function setEjemplar($ejemplar){
+        $this->ejemplar = $ejemplar;
+    }
+
+    public function getAutor(){
+        return $this->autor; 
+    }
+
+    public function setAutor($autor){
+        $this->autor = $autor;
     }
 
     public function getFecha(){
@@ -49,7 +70,23 @@ class Prestamo{
     }
 
     public function setFechaFinal($fecha_final){
-        $this->fecha = $fecha_final;
+        $this->fecha_final = $fecha_final;
+    }
+
+    public function getIdUsuario(){
+        return $this->idUsuario; 
+    }
+
+    public function setIdUsuario($idUsuario){
+        $this->idUsuario = $idUsuario;
+    }
+
+    public function getIdEjemplar(){
+        return $this->idEjemplar; 
+    }
+
+    public function setIdEjemplar($idEjemplar){
+        $this->idEjemplar = $idEjemplar;
     }
 
 }

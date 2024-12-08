@@ -50,16 +50,16 @@
                         <td><?= $ejemplar->getAutor(); ?></td>
                         <td><?= $ejemplar->getIdioma(); ?></td>
                         <td><?= $ejemplar->getEditorial(); ?></td>
-                    <?php    
+                        <?php    
                         if(isset($_SESSION['usuario'])){
                             if($_SESSION['usuario']['id_rol'] != 3){ 
-                            ?>
+                        ?>
                                 <td><a href='/controladores/controladorFormularioEjemplares.php?id=<?= $ejemplar->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
                                 <td><a href='/controladores/controladorEliminarEjemplares.php?id=<?= $ejemplar->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>
-                            <?php 
+                        <?php 
                             }
                         }
-                    ?>
+                        ?>
                     </tr>
               <?php endforeach; ?>
           </table>

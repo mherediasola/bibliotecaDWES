@@ -1,5 +1,5 @@
 <?php 
-include("BaseDeDatos.php");
+require_once("BaseDeDatos.php");
 require_once(__DIR__ . "/../pojos/Usuario.php");
 class Usuarios implements BaseDeDatos{
     //atributos
@@ -19,12 +19,25 @@ class Usuarios implements BaseDeDatos{
         $this->conexion = new mysqli($this->server, $this->user, $this->pass, $this->base);
     }
 
+    //muestra todos los usuarios aunque no tengan rol
     public function consultarTodo()
     {
-        $consulta = "SELECT * FROM usuario";
+        $consulta = "SELECT u.id, r.tipo AS rol, u.usuario, u.clave, u.nombre, u.apellidos, u.email FROM usuario u LEFT JOIN rol r ON u.id_rol = r.id";
         $resultado = $this->conexion->query($consulta);
         $usuarios= $resultado->fetch_All(MYSQLI_BOTH);
-        return $usuarios;
+        $array_usuarios = array();
+        foreach($usuarios as $usuario){
+            $tmp = new Usuario();
+            $tmp->setId($usuario['id']);
+            $tmp->setRol($usuario['rol']);
+            $tmp->setUsuario($usuario['usuario']);
+            $tmp->setClave($usuario['clave']);
+            $tmp->setNombre($usuario['nombre']);
+            $tmp->setApellidos($usuario['apellidos']);
+            $tmp->setEmail($usuario['email']);
+            array_push($array_usuarios, $tmp);
+        }
+        return $array_usuarios;
     }
 
     public function consultarCoincideId($id)
@@ -35,7 +48,7 @@ class Usuarios implements BaseDeDatos{
         $usuarios = $usuarios[0];
         $usuario = new Usuario();
         $usuario->setId($usuarios['id']);
-        $usuario->setIdRol($usuarios['id_rol']);
+        $usuario->setRol($usuarios['id_rol']);
         $usuario->setUsuario($usuarios['usuario']);
         $usuario->setClave($usuarios['clave']);
         $usuario->setNombre($usuarios['nombre']);
@@ -45,13 +58,13 @@ class Usuarios implements BaseDeDatos{
     }
 
     public function insertar($usuario){
-        $consulta="INSERT INTO usuario(id_rol, usuario, clave, nombre, apellidos, email) VALUES ({$usuario->getIdRol()}, '{$usuario->getUsuario()}', '{$usuario->getClave()}', '{$usuario->getNombre()}', '{$usuario->getApellidos()}', '{$usuario->getEmail()}')";
+        $consulta="INSERT INTO usuario(id_rol, usuario, clave, nombre, apellidos, email) VALUES ({$usuario->getRol()}, '{$usuario->getUsuario()}', '{$usuario->getClave()}', '{$usuario->getNombre()}', '{$usuario->getApellidos()}', '{$usuario->getEmail()}')";
         $this->conexion->query($consulta);
     }
 
     public function editar($usuario)
     {
-        $consulta= "UPDATE usuario SET id_rol={$usuario->getIdRol()}, usuario='{$usuario->getUsuario()}', clave='{$usuario->getClave()}', nombre='{$usuario->getNombre()}', apellidos='{$usuario->getApellidos()}', email='{$usuario->getEmail()}' WHERE id = {$usuario->getId()}";
+        $consulta= "UPDATE usuario SET id_rol={$usuario->getRol()}, usuario='{$usuario->getUsuario()}', clave='{$usuario->getClave()}', nombre='{$usuario->getNombre()}', apellidos='{$usuario->getApellidos()}', email='{$usuario->getEmail()}' WHERE id = {$usuario->getId()}";
         $this->conexion->query($consulta);
         
     }

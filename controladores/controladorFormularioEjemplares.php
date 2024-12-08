@@ -1,9 +1,9 @@
 <?php 
 session_start();
-include("../controladores/requireLoggin.php");
+include("requireLoggin.php");
 
 if(isset($_SESSION['usuario'])){
-  if($_SESSION['usuario']['id_rol'] != 1){
+  if($_SESSION['usuario']['id_rol'] === 3){
     header("Location:index.php");
   }
 }
