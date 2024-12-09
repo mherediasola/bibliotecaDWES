@@ -1,45 +1,3 @@
-<?php
-$usuario;
-$clave;
-
-$server = "localhost:3308";
-$user = "root";
-$pass = "";
-$base = "biblioteca";
-
-$dwes = mysqli_connect($server, $user, $pass, $base);
-
-
-if(isset($_REQUEST['usuario'])){
-  $usuario = $_REQUEST['usuario'];
-}else{
-  $usuario="";
-}
-
-if(isset($_REQUEST['clave'])){
-  $clave = $_REQUEST['clave'];
-}else{
-  $clave="";
-}
-
-if($usuario){
-  $sql= "SELECT * FROM usuario WHERE usuario = '$usuario' AND clave = '$clave'";
-  $resultado = $dwes -> query($sql);
-  $res = $resultado->fetch_array();
-
-  if($res){
-    session_start();
-    $_SESSION['usuario']= $res;
-    header("Location:../../vistas/index.php");
-  }
-
-}
-
-$dwes->close();
-
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,20 +15,21 @@ $dwes->close();
         <h1>Biblioteca</h1>
     </header>
     <main>
-      <?php include("../../navbar.php");?>
+      <?php include("navbar.php");?>
       <div id="bienvenido">
           <h3>Iniciar sesión</h3>
       </div>
       <div id="formulario" class="form mb-3 formulario col-2 mx-auto">
-          <form action="inicioSesion.php" method="post">
+          <form action="/controladores/controladorInicioSesion.php" method="post">
           <label class="form-label" for="usuario">Usuario</label>
           <input class="form-control" type="text" name="usuario" id="usuario">            
           <label class="form-label" for="clave">Clave</label>
           <input class="form-control" type="password" name="clave" id="clave">
+          <p class="invalid-feedback" style="display: block;"><?php if(isset($error)) {echo ($error);} ?></p>
           <button class="btn btn-primary my-3" type="submit">Enviar</button>
           </form>
       </div>
     </main>
-    <?php include("../../vistas/footer.php");?>
+    <?php include("footer.php");?>
 </body>
 </html>

@@ -3,13 +3,10 @@
 class Prestamo{
     private $id;
     private $usuario;
-    private $nombreUsuario;
     private $ejemplar;
     private $autor;
     private $fecha;
     private $fecha_final;
-    private $idUsuario;
-    private $idEjemplar;
 
 
     public function __construct()
@@ -31,14 +28,6 @@ class Prestamo{
 
     public function setUsuario($usuario){
         $this->usuario = $usuario;
-    }
-    
-    public function getNombreUsuario(){
-        return $this->nombreUsuario; 
-    }
-
-    public function setNombreUsuario($nombreUsuario){
-        $this->nombreUsuario = $nombreUsuario;
     }
     
     public function getEjemplar(){
@@ -71,22 +60,6 @@ class Prestamo{
 
     public function setFechaFinal($fecha_final){
         $this->fecha_final = $fecha_final;
-    }
-
-    public function getIdUsuario(){
-        return $this->idUsuario; 
-    }
-
-    public function setIdUsuario($idUsuario){
-        $this->idUsuario = $idUsuario;
-    }
-
-    public function getIdEjemplar(){
-        return $this->idEjemplar; 
-    }
-
-    public function setIdEjemplar($idEjemplar){
-        $this->idEjemplar = $idEjemplar;
     }
 
 }

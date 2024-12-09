@@ -16,7 +16,7 @@ JOIN usuario u ON r.id_usuario = u.id";
 if($_SESSION['usuario']){
   //3 es el id del rol usuario
   //La consulta solo mostrará información de reservas relacionada con el usuario concreto
-  if($_SESSION['usuario']['id_rol'] == 3){
+  if(unserialize($_SESSION['usuario'])->getRol() == 3){
     $sql .= " WHERE u.id = {$_SESSION['usuario']['id']}";
   }
 }else{

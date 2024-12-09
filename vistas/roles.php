@@ -15,7 +15,7 @@
         <h1>Biblioteca</h1>
     </header>
     <main>
-        <?php include("../navbar.php");?>
+        <?php include("navbar.php");?>
         <h1 class="titulo">Roles</h1>
         <div class="tabla" >
             <div>

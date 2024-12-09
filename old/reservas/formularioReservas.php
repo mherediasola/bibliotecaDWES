@@ -52,7 +52,7 @@ $dwes->close();
             <form action="editarInsertar.php" method="post">
                 <input type="hidden" name="idReserva" id="idReserva" value="<?php if($reserva){echo $reserva['id'];}?>">
                 <?php 
-                    if($_SESSION['usuario']['id_rol'] != 3){
+                    if(unserialize($_SESSION['usuario'])->getRol() != 3){
                         echo('<label class="form-label" for="usuario">Usuario</label>');
                         echo('<select class="form-select" name="usuario" id="usuario">');
                             foreach($usuarios as $usuario){

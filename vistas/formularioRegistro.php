@@ -1,70 +1,3 @@
-<?php 
-$usuario="";
-$clave="";
-$repetirClave="";
-$nombre="";
-$apellidos="";
-$email="";
-$confirmarEmail="";
-$error="";
-
-$server = "localhost:3308";
-$user = "root";
-$pass = "";
-$base = "biblioteca";
-
-$dwes = mysqli_connect($server, $user, $pass, $base);
-
-
-if(isset($_REQUEST['usuario'])){
-  $usuario = $_REQUEST['usuario'];
-}
-
-if(isset($_REQUEST['clave'])){
-  $clave = $_REQUEST['clave'];
-}
-
-if(isset($_REQUEST['repetirClave'])){
-  $repetirClave = $_REQUEST['repetirClave'];
-}
-
-if(isset($_REQUEST['nombre'])){
-  $nombre = $_REQUEST['nombre'];
-}
-
-if(isset($_REQUEST['apellidos'])){
-  $apellidos = $_REQUEST['apellidos'];
-}
-
-if(isset($_REQUEST['email'])){
-  $email = $_REQUEST['email'];
-}
-
-if(isset($_REQUEST['confirmarEmail'])){
-  $confirmarEmail = $_REQUEST['confirmarEmail'];
-}
-
-
-//insert
-
-  if($clave && $clave === $repetirClave && $email && $email === $confirmarEmail){
-    $sql= "SELECT * FROM usuario WHERE usuario = '$usuario'";
-    $resultado = $dwes -> query($sql);
-    $res = $resultado->fetch_array();
-    if(!$res){
-      $insertar="INSERT INTO usuario(id_rol,usuario,clave,nombre,apellidos,email) VALUES (3,'{$usuario}','{$clave}','{$nombre}','{$apellidos}','{$email}')";
-      $dwes -> query($insertar);
-    }else{
-      $error = "El usuario indicado ya existe";
-    }
-    
-  }
- 
-//si el usuario no puede acceder a alguna página concreta, comprobar su rol y redirigirlo a otra página, por ejemplo a index usando header.
-
-$dwes->close();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,12 +15,12 @@ $dwes->close();
         <h1>Biblioteca</h1>
     </header>
     <main>
-      <?php include("../../navbar.php");?>
+      <?php include("navbar.php");?>
       <div id="bienvenido">
         <h3>Registrarse</h3>
       </div>
       <div id="formulario" class="form mb-3 formulario col-2 mx-auto">
-        <form action="registro.php" method="post">
+        <form action="controladorFormularioRegistroUsuarios.php" method="post">
           <label class="form-label" for="nombre">Nombre</label>
           <input class="form-control" type="text" name="nombre" id="nombre">
           <label class="form-label" for="apellidos">Apellidos</label>
@@ -102,11 +35,11 @@ $dwes->close();
           <input class="form-control" type="email" name="email" id="email">
           <label class="form-label" for="confirmarEmail">Confirmar email</label>
           <input class="form-control" type="email" name="confirmarEmail" id="confirmarEmail">
-          <p class="invalid-feedback" style="display: block;"><?php if($error) {echo ("$error");} ?></p>
+          <p class="invalid-feedback" style="display: block;"><?php if(isset($error)) {echo ($error);} ?></p>
           <button class="btn btn-primary my-3" type="submit">Enviar</button>
         </form>
       </div>
     </main>
-    <?php include("../../vistas/footer.php");?>
+    <?php include("footer.php");?>
 </body>
 </html>

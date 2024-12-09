@@ -1,6 +1,8 @@
 <?php 
 require_once("BaseDeDatos.php");
 require_once(__DIR__ . "/../pojos/Prestamo.php");
+require_once("Usuarios.php");
+require_once("Ejemplares.php");
 class Prestamos implements BaseDeDatos{
     //atributos
     private $conexion;
@@ -22,7 +24,7 @@ class Prestamos implements BaseDeDatos{
     //muestra toda la info de préstamos uniendo tres tablas
     public function consultarTodo()
     {
-        $consulta = "SELECT p.id, u.usuario, CONCAT(u.nombre, ' ', u.apellidos) AS Nombre, e.nombre AS Ejemplar, e.autor AS Autor, p.fecha AS Préstamo, p.fecha_final AS Vencimiento 
+        $consulta = "SELECT p.id, u.id AS idUsuario, CONCAT(u.nombre, ' ', u.apellidos) AS Nombre, e.id AS Ejemplar, e.autor AS Autor, p.fecha AS Préstamo, p.fecha_final AS Vencimiento 
         FROM ejemplar e JOIN prestamo p ON e.id = p.id_ejemplar
         JOIN usuario u ON u.id = p.id_usuario";
         $resultado = $this->conexion->query($consulta);
@@ -31,9 +33,37 @@ class Prestamos implements BaseDeDatos{
         foreach($prestamos as $prestamo){
             $tmp = new Prestamo();
             $tmp->setId($prestamo['id']);
-            $tmp->setUsuario($prestamo['usuario']);
-            $tmp->setNombreUsuario($prestamo['Nombre']);
-            $tmp->setEjemplar($prestamo['Ejemplar']);
+            $tmpUsuarios = new Usuarios();
+            $tmpUsuarios = $tmpUsuarios->consultarCoincideId($prestamo['idUsuario']);
+            $tmp->setUsuario($tmpUsuarios);
+            $tmpEjemplares = new Ejemplares();
+            $tmpEjemplares = $tmpEjemplares->consultarCoincideId($prestamo['Ejemplar']);
+            $tmp->setEjemplar($tmpEjemplares);
+            $tmp->setAutor($prestamo['Autor']);
+            $tmp->setFecha($prestamo['Préstamo']);
+            $tmp->setFechaFinal($prestamo['Vencimiento']);
+            array_push($array_prestamos, $tmp);
+        }
+        return $array_prestamos;
+    }
+
+    public function consultarTodoUsuario($idUsuario)
+    {
+        $consulta = "SELECT p.id, u.id AS idUsuario, CONCAT(u.nombre, ' ', u.apellidos) AS Nombre, e.id AS Ejemplar, e.autor AS Autor, p.fecha AS Préstamo, p.fecha_final AS Vencimiento 
+        FROM ejemplar e JOIN prestamo p ON e.id = p.id_ejemplar
+        JOIN usuario u ON u.id = p.id_usuario WHERE  u.id = $idUsuario";
+        $resultado = $this->conexion->query($consulta);
+        $prestamos= $resultado->fetch_All(MYSQLI_BOTH);
+        $array_prestamos = array();
+        foreach($prestamos as $prestamo){
+            $tmp = new Prestamo();
+            $tmp->setId($prestamo['id']);
+            $tmpUsuarios = new Usuarios();
+            $tmpUsuarios = $tmpUsuarios->consultarCoincideId($prestamo['idUsuario']);
+            $tmp->setUsuario($tmpUsuarios);
+            $tmpEjemplares = new Ejemplares();
+            $tmpEjemplares = $tmpEjemplares->consultarCoincideId($prestamo['Ejemplar']);
+            $tmp->setEjemplar($tmpEjemplares);
             $tmp->setAutor($prestamo['Autor']);
             $tmp->setFecha($prestamo['Préstamo']);
             $tmp->setFechaFinal($prestamo['Vencimiento']);
@@ -44,17 +74,20 @@ class Prestamos implements BaseDeDatos{
 
     public function consultarCoincideId($id)
     {
-        $consulta = "SELECT p.id, u.usuario, CONCAT(u.nombre, ' ', u.apellidos) AS Nombre, e.nombre AS Ejemplar, e.autor AS Autor, p.fecha AS Préstamo, p.fecha_final AS Vencimiento 
+        $consulta = "SELECT p.id, u.id AS idUsuario, CONCAT(u.nombre, ' ', u.apellidos) AS Nombre, e.id AS Ejemplar, e.autor AS Autor, p.fecha AS Préstamo, p.fecha_final AS Vencimiento 
         FROM ejemplar e JOIN prestamo p ON e.id = p.id_ejemplar
-        JOIN usuario u ON u.id = p.id_usuario WHERE u.id = $id";
+        JOIN usuario u ON u.id = p.id_usuario WHERE p.id = $id";
         $resultado = $this->conexion->query($consulta);
         $prestamos = $resultado->fetch_All(MYSQLI_BOTH);
         $prestamos = $prestamos[0];
         $prestamo = new Prestamo();
         $prestamo->setId($prestamos['id']);
-        $prestamo->setUsuario($prestamos['usuario']);
-        $prestamo->setNombreUsuario($prestamos['Nombre']);
-        $prestamo->setEjemplar($prestamos['Ejemplar']);
+        $tmpUsuarios = new Usuarios();
+        $tmpUsuarios = $tmpUsuarios->consultarCoincideId($prestamos['idUsuario']);
+        $prestamo->setUsuario($tmpUsuarios);
+        $tmpEjemplares = new Ejemplares();
+        $tmpEjemplares = $tmpEjemplares->consultarCoincideId($prestamos['Ejemplar']);
+        $prestamo->setEjemplar($tmpEjemplares);
         $prestamo->setAutor($prestamos['Autor']);
         $prestamo->setFecha($prestamos['Préstamo']);
         $prestamo->setFechaFinal($prestamos['Vencimiento']);
@@ -64,15 +97,15 @@ class Prestamos implements BaseDeDatos{
     public function insertar($prestamo){    
         echo "Fecha: " . $prestamo->getFecha() . "<br>"; 
         echo "Fecha Final: " . $prestamo->getFechaFinal() . "<br>";  
-        
-        $consulta = "INSERT INTO prestamo(id_usuario, id_ejemplar, fecha, fecha_final) VALUES ({$prestamo->getIdUsuario()}, {$prestamo->getIdEjemplar()}, '{$prestamo->getFecha()}', '{$prestamo->getFechaFinal()}')";
+
+        $consulta = "INSERT INTO prestamo(id_usuario, id_ejemplar, fecha, fecha_final) VALUES ({$prestamo->getUsuario()->getId()}, {$prestamo->getEjemplar()->getId()}, '{$prestamo->getFecha()}', '{$prestamo->getFechaFinal()}')";
         $this->conexion->query($consulta); 
     }
 
     public function editar($prestamo)
     {
         $consulta= "UPDATE prestamo 
-        SET id_usuario= {$prestamo->getIdUsuario()}, id_ejemplar= {$prestamo->getIdEjemplar()}, fecha= '{$prestamo->getFecha()}', fecha_final= '{$prestamo->getFechaFinal()}' WHERE id = {$prestamo->getId()}";
+        SET id_usuario= {$prestamo->getUsuario()->getId()}, id_ejemplar= {$prestamo->getEjemplar()->getId()}, fecha= '{$prestamo->getFecha()}', fecha_final= '{$prestamo->getFechaFinal()}' WHERE id = {$prestamo->getId()}";
         $this->conexion->query($consulta);
         
     }

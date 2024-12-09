@@ -15,7 +15,7 @@
         <h1>Biblioteca</h1>
     </header>
     <main>
-        <?php include("../navbar.php");?>
+        <?php include("navbar.php");?>
         <div id="bienvenido">
             <h3>Bienvenido a la página de inicio la biblioteca</h3>
         </div>

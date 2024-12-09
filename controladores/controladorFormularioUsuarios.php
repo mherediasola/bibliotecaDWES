@@ -1,9 +1,10 @@
 <?php 
+require_once("../modelos/pojos/Usuario.php");
 session_start();
 include("requireLoggin.php");
 
 if(isset($_SESSION['usuario'])){
-  if($_SESSION['usuario']['id_rol'] != 1){
+  if(unserialize($_SESSION['usuario'])->getRol() != 1){
     header("Location:/vistas/index.php");
   }
 }
@@ -12,7 +13,7 @@ require_once("../modelos/BBDD/Roles.php");
 $roles = new Roles();
 $array_roles = $roles->consultarTodo();
 
-require_once("../modelos/pojos/Usuario.php");
+
 $usuario="";
 
 if(isset($_REQUEST['id'])){

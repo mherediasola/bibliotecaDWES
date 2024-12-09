@@ -15,13 +15,13 @@
         <h1>Biblioteca</h1>
     </header>
     <main>
-      <?php include("../navbar.php");?>
+      <?php include("navbar.php");?>
       <h1 class="titulo">Catálogo</h1>
       <div class="tabla" >
           <div>
             <?php
                 if(isset($_SESSION['usuario'])){
-                    if($_SESSION['usuario']['id_rol'] != 3){
+                    if(unserialize($_SESSION['usuario'])->getRol() != 3){
                         echo('<a href="/controladores/controladorFormularioEjemplares.php" class="btn btn-success botonInsertar">Insertar</a>');
                     }
                 } 
@@ -36,7 +36,7 @@
                 <th>Editorial</th>
                 <?php
                     if(isset($_SESSION['usuario'])){ 
-                        if($_SESSION['usuario']['id_rol'] != 3){
+                        if(unserialize($_SESSION['usuario'])->getRol() != 3){
                             echo("<th></th>");
                             echo ("<th></th>");
                         }
@@ -52,7 +52,7 @@
                         <td><?= $ejemplar->getEditorial(); ?></td>
                         <?php    
                         if(isset($_SESSION['usuario'])){
-                            if($_SESSION['usuario']['id_rol'] != 3){ 
+                            if(unserialize($_SESSION['usuario'])->getRol() != 3){ 
                         ?>
                                 <td><a href='/controladores/controladorFormularioEjemplares.php?id=<?= $ejemplar->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
                                 <td><a href='/controladores/controladorEliminarEjemplares.php?id=<?= $ejemplar->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>

@@ -15,18 +15,18 @@
         <h1>Biblioteca</h1>
     </header>
     <main>
-        <?php include("../navbar.php");?>
+        <?php include("navbar.php");?>
         <h3 class="titulo">Préstamo</h3>
         <div class="form mb-3 formulario col-2 mx-auto">
             <form action="\controladores\controloadorEditarInsertarPrestamos.php" method="post">
                 <input type="hidden" name="idPrestamo" id="idPrestamo" value="<?php if($prestamo){echo $prestamo->getId();}?>">
                 <?php 
-                    if($_SESSION['usuario']['id_rol'] != 3){?>
+                    if(unserialize($_SESSION['usuario'])->getRol() != 3){?>
                         <label class="form-label" for="usuario">Usuario</label>
                         <select class="form-select" name="usuario" id="usuario">
                         <?php foreach($array_usuarios as $usuario) : ?>
                                 <?php $nombre = $usuario->getUsuario() . " - " . $usuario->getNombre() . " " . $usuario->getApellidos(); 
-                                if($prestamo && $usuario->getId() == $prestamo->getIdUsuario()){?>
+                                if($prestamo && $usuario->getId() == $prestamo->getUsuario()->getId()){?>
                                     <option selected value='<?=$usuario->getId() ?>'><?=$nombre ?></option>
                                 <?php
                                 }else{?>
@@ -46,7 +46,7 @@
                 <select class="form-select" name="ejemplar" id="ejemplar">
                     <?php foreach($array_ejemplares as $ejemplar) : ?>
                             <?php
-                            if($prestamo && $ejemplar->getId() == $prestamo->getIdEjemplar()){?>
+                            if($prestamo && $ejemplar->getId() == $prestamo->getEjemplar()->getId()){?>
                                 <option selected value='<?=$ejemplar->getId() ?>'><?=$ejemplar->getNombre() ?></option>
                             <?php
                             }else{?>

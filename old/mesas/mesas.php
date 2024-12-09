@@ -3,7 +3,7 @@ session_start();
 include("../../requireLoggin.php");
 
 if(isset($_SESSION['usuario'])){
-  if($_SESSION['usuario']['id_rol'] == 3){
+  if(unserialize($_SESSION['usuario'])->getRol() == 3){
     header("Location:../../index.php");
   }
 }

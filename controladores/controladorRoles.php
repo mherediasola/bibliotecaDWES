@@ -1,9 +1,9 @@
 <?php 
-//provisional sesión
+require_once("../modelos/pojos/Usuario.php");
 include("requireLoggin.php");
 
 if(isset($_SESSION['usuario'])){
-  if($_SESSION['usuario']['id_rol'] != 1){
+  if(unserialize($_SESSION['usuario'])->getRol() != 1){
     header("Location:../vistas/index.php");
   }
 }

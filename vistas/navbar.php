@@ -1,9 +1,5 @@
-<?php
-    if(session_status() !== PHP_SESSION_ACTIVE){
-        session_start();
-    }
-?>
-
+<?php require_once("../modelos/pojos/Usuario.php");?>
+<?php include("../controladores/controladorSesionActiva.php")?>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/vistas/index.php">Inicio</a>
@@ -14,13 +10,13 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <?php
                 if(isset($_SESSION['usuario'])){
-                    if($_SESSION['usuario']['id_rol'] != 3){
+                    if(unserialize($_SESSION['usuario'])->getRol() != 3){
                         echo('<li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Secciones
                         </a>
                         <ul class="dropdown-menu">');
-                            if($_SESSION['usuario']['id_rol'] == 1){
+                            if(unserialize($_SESSION['usuario'])->getRol() == 1){
                                 echo('<li><a class="dropdown-item" href="/controladores/controladorRoles.php">Roles</a></li>
                                 <li><a class="dropdown-item" href="/controladores/controladorUsuarios.php">Usuarios</a></li>');
                             }
@@ -40,20 +36,21 @@
             <ul class="dropdown-menu">
                 <?php 
                     if(isset($_SESSION['usuario'])){
-                        echo('<li><a class="dropdown-item" href="/paginas/miCuenta/cerrarSesion.php">Cerrar Sesión</a></li>');
-                        if($_SESSION['usuario']['id_rol'] == 3){
+                        echo('<li><a class="dropdown-item" href="/controladores/controladorCerrarSesion.php">Cerrar Sesión</a></li>');
+                        if(unserialize($_SESSION['usuario'])->getRol() == 3){
                             echo('<li><a class="dropdown-item" href="/controladores/controladorPrestamos.php">Mis préstamos</a></li>');
                         }
                     }else{
-                        echo('<li><a class="dropdown-item" href="/paginas/miCuenta/registro.php">Registrarse</a></li>');
-                        echo('<li><a class="dropdown-item" href="/paginas/miCuenta/inicioSesion.php">Iniciar sesión</a></li>');
+                        echo('<li><a class="dropdown-item" href="/controladores/controladorFormularioRegistroUsuarios.php">Registrarse</a></li>');
+                        echo('<li><a class="dropdown-item" href="/controladores/controladorInicioSesion.php">Iniciar sesión</a></li>');
                     }
                 ?>
             </ul>
             </li>
             <?php
-                if(isset($_SESSION['usuario'])){
-                echo("<li class="."nav-item"."><a class="."nav-link"." href="."#".">Bienvenido, {$_SESSION['usuario']['nombre']}</a></li>");
+                if(isset($_SESSION['usuario'])){?>
+                     <li class="nav-item"><a class="nav-link" href="#">Bienvenido, <?= unserialize($_SESSION['usuario'])->getNombre() ?></a></li>
+                <?php
                 }
             ?>
         </ul>

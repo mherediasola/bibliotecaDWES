@@ -14,14 +14,20 @@ if(isset($_REQUEST['idPrestamo'])){
 $idUser="";
 if(isset($_REQUEST['usuario'])){
     $idUser = $_REQUEST['usuario'];
-    $prestamo->setIdUsuario($idUser);
+    require_once("../modelos/BBDD/Usuarios.php");
+    $usuario = new Usuarios();
+    $usuario = $usuario->consultarCoincideId($idUser);
+    $prestamo->setUsuario($usuario);
 }
 
 
 $IdEjemplar="";
 if(isset($_REQUEST['ejemplar'])){
     $IdEjemplar = $_REQUEST['ejemplar'];
-    $prestamo->setEjemplar($IdEjemplar);
+    require_once("../modelos/BBDD/Ejemplares.php");
+    $ejemplar = new Ejemplares();
+    $ejemplar = $ejemplar->consultarCoincideId($IdEjemplar);
+    $prestamo->setEjemplar($ejemplar);
 }
 
 

@@ -20,7 +20,7 @@
       <div class="tabla" >
         <div>
             <?php
-                if($_SESSION['usuario']['id_rol'] != 3){
+                if(unserialize($_SESSION['usuario'])->getRol() != 3){
                     echo('<a href="/controladores/controladorFormularioPrestamos.php" class="btn btn-success botonInsertar">Insertar</a>');
                 }
             ?>
@@ -35,9 +35,9 @@
             <th>Vencimiento</th>
                 <tr>
                     <td><?= $prestamo->getId(); ?></td>
-                    <td><?= $prestamo->getUsuario(); ?></td>
-                    <td><?= $prestamo->getNombreUsuario(); ?></td>
-                    <td><?= $prestamo->getEjemplar(); ?></td>
+                    <td><?= $prestamo->getUsuario()->getUsuario(); ?></td>
+                    <td><?= $prestamo->getUsuario()->getNombre(); ?></td>
+                    <td><?= $prestamo->getEjemplar()->getNombre(); ?></td>
                     <td><?= $prestamo->getAutor(); ?></td>
                     <td><?= $prestamo->getFecha(); ?></td>
                     <td><?= $prestamo->getFechaFinal(); ?></td>

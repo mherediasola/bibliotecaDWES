@@ -15,7 +15,7 @@
         <h1>Biblioteca</h1>
     </header>
     <main>
-        <?php include("../navbar.php");?>
+        <?php include("navbar.php");?>
         <h3 class="titulo">Rol</h3>
         <div class="form mb-3 formulario col-2 mx-auto">
             <form action="/controladores/controladorEditarInsertarRoles.php" method="post">

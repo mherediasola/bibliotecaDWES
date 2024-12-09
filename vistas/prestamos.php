@@ -15,12 +15,12 @@
         <h1>Biblioteca</h1>
     </header>
     <main>
-      <?php include("../navbar.php");?>
+      <?php include("navbar.php");?>
       <h1 class="titulo">Préstamos</h1>
       <div class="tabla" >
         <div>
             <?php
-                if($_SESSION['usuario']['id_rol'] != 3){
+                if(unserialize($_SESSION['usuario'])->getRol() != 3){
                     echo('<a href="/controladores/controladorFormularioPrestamos.php" class="btn btn-success botonInsertar">Insertar</a>');
                 }
             ?>
@@ -34,7 +34,7 @@
             <th>Préstamo</th>
             <th>Vencimiento</th>
             <?php 
-                if($_SESSION['usuario']['id_rol'] != 3){
+                if(unserialize($_SESSION['usuario'])->getRol() != 3){
                   echo("<th></th>");
                   echo ("<th></th>");
                 }
@@ -42,16 +42,16 @@
                 <?php foreach($array_prestamos as $prestamo) : ?>
                   <tr>
                       <td><?= $prestamo->getId(); ?></td>
-                      <td><?= $prestamo->getUsuario(); ?></td>
-                      <td><?= $prestamo->getNombreUsuario(); ?></td>
-                      <td><?= $prestamo->getEjemplar(); ?></td>
+                      <td><?= $prestamo->getUsuario()->getUsuario(); ?></td>
+                      <td><?= $prestamo->getUsuario()->getNombre(); ?></td>
+                      <td><?= $prestamo->getEjemplar()->getNombre(); ?></td>
                       <td><?= $prestamo->getAutor(); ?></td>
                       <td><?= $prestamo->getFecha(); ?></td>
                       <td><?= $prestamo->getFechaFinal(); ?></td>
                       <?php 
-                        if($_SESSION['usuario']['id_rol'] != 3){
+                        if(unserialize($_SESSION['usuario'])->getRol() != 3){
                           ?>
-                          <td><a href='/controladores/controladorFormularioPrestamos.php?id= <?= $prestamo->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
+                          <td><a href='/controladores/controladorFormularioPrestamos.php?id=<?= $prestamo->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
                           <td><a href='/controladores/controladorEliminarPrestamos.php?id=<?= $prestamo->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>
                       <?php
                       }

@@ -19,6 +19,46 @@ class Usuarios implements BaseDeDatos{
         $this->conexion = new mysqli($this->server, $this->user, $this->pass, $this->base);
     }
 
+    public function consultarUsuario($usuario){
+        $consulta = "SELECT * FROM usuario WHERE usuario = '{$usuario->getUsuario()}'";
+        $resultado = $this->conexion->query($consulta);
+        $usuarios= $resultado->fetch_All(MYSQLI_BOTH);
+        if(count($usuarios) == 0){
+            return "";
+        }else{
+            $usuarios = $usuarios[0];
+            $usuario = new Usuario();
+            $usuario->setId($usuarios['id']);
+            $usuario->setRol($usuarios['id_rol']);
+            $usuario->setUsuario($usuarios['usuario']);
+            $usuario->setClave($usuarios['clave']);
+            $usuario->setNombre($usuarios['nombre']);
+            $usuario->setApellidos($usuarios['apellidos']);
+            $usuario->setEmail($usuarios['email']);
+            return $usuario;
+        }
+    }
+
+    public function consultarUsuarioClave($usuario){
+        $consulta= "SELECT * FROM usuario WHERE usuario = '{$usuario->getUsuario()}' AND clave = '{$usuario->getClave()}'";
+        $resultado = $this->conexion->query($consulta);
+        $usuarios= $resultado->fetch_All(MYSQLI_BOTH);
+        if(count($usuarios) == 0){
+            return "";
+        }else{
+            $usuarios = $usuarios[0];
+            $usuario = new Usuario();
+            $usuario->setId($usuarios['id']);
+            $usuario->setRol($usuarios['id_rol']);
+            $usuario->setUsuario($usuarios['usuario']);
+            $usuario->setClave($usuarios['clave']);
+            $usuario->setNombre($usuarios['nombre']);
+            $usuario->setApellidos($usuarios['apellidos']);
+            $usuario->setEmail($usuarios['email']);
+            return $usuario;
+        }
+    }
+
     //muestra todos los usuarios aunque no tengan rol
     public function consultarTodo()
     {

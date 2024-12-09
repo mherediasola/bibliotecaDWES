@@ -15,13 +15,13 @@
         <h1>Biblioteca</h1>
     </header>
     <main>
-        <?php include("../navbar.php");?>
+        <?php include("navbar.php");?>
         <h1 class="titulo">Usuarios</h1>
         <div class="tabla" >
             <div>
               <?php 
                 if(isset($_SESSION['usuario'])){
-                  if($_SESSION['usuario']['id_rol'] == 1){
+                  if(unserialize($_SESSION['usuario'])->getRol() == 1){
                     echo('<a href="/controladores/controladorFormularioUsuarios.php" class="btn btn-success botonInsertar">Insertar</a>');
                   }
                 }
@@ -48,7 +48,7 @@
                         <td><?= $usuario->getEmail(); ?></td>
                         <?php        
                         if(isset($_SESSION['usuario'])){
-                          if($_SESSION['usuario']['id_rol'] == 1){
+                          if(unserialize($_SESSION['usuario'])->getRol() == 1){
                         ?>
                             <td><a href='/controladores/controladorFormularioUsuarios.php?id=<?= $usuario->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
                             <td><a href='/controladores/controladorEliminarUsuarios.php?id=<?= $usuario->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>
