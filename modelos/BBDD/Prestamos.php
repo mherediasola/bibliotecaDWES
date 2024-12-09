@@ -46,27 +46,33 @@ class Prestamos implements BaseDeDatos{
     {
         $consulta = "SELECT p.id, u.usuario, CONCAT(u.nombre, ' ', u.apellidos) AS Nombre, e.nombre AS Ejemplar, e.autor AS Autor, p.fecha AS Préstamo, p.fecha_final AS Vencimiento 
         FROM ejemplar e JOIN prestamo p ON e.id = p.id_ejemplar
-        JOIN usuario u ON u.id = p.id_usuario WHERE p.id = $id";
+        JOIN usuario u ON u.id = p.id_usuario WHERE u.id = $id";
         $resultado = $this->conexion->query($consulta);
         $prestamos = $resultado->fetch_All(MYSQLI_BOTH);
         $prestamos = $prestamos[0];
         $prestamo = new Prestamo();
         $prestamo->setId($prestamos['id']);
+        $prestamo->setUsuario($prestamos['usuario']);
         $prestamo->setNombreUsuario($prestamos['Nombre']);
         $prestamo->setEjemplar($prestamos['Ejemplar']);
+        $prestamo->setAutor($prestamos['Autor']);
         $prestamo->setFecha($prestamos['Préstamo']);
         $prestamo->setFechaFinal($prestamos['Vencimiento']);
         return $prestamo;
     }
 
-    public function insertar($prestamo){
-        $consulta="INSERT INTO prestamo(id_usuario, id_ejemplar, fecha, fecha_final) VALUES ({$prestamo->getIdUsuario()}, {$prestamo->getIdEjemplar()}, '{$prestamo->getFecha()}', '{$prestamo->getFechaFinal()}')";
-        $this->conexion->query($consulta);
+    public function insertar($prestamo){    
+        echo "Fecha: " . $prestamo->getFecha() . "<br>"; 
+        echo "Fecha Final: " . $prestamo->getFechaFinal() . "<br>";  
+        
+        $consulta = "INSERT INTO prestamo(id_usuario, id_ejemplar, fecha, fecha_final) VALUES ({$prestamo->getIdUsuario()}, {$prestamo->getIdEjemplar()}, '{$prestamo->getFecha()}', '{$prestamo->getFechaFinal()}')";
+        $this->conexion->query($consulta); 
     }
 
     public function editar($prestamo)
     {
-        $consulta= "UPDATE prestamo SET (id_usuario= {$prestamo->getIdUsuario()}, id_ejemplar= {$prestamo->getIdEjemplar()}, fecha= '{$prestamo->getFecha()}', fecha_final= '$prestamo->getFechaFinal()}' WHERE id = {$prestamo->getId()}";
+        $consulta= "UPDATE prestamo 
+        SET id_usuario= {$prestamo->getIdUsuario()}, id_ejemplar= {$prestamo->getIdEjemplar()}, fecha= '{$prestamo->getFecha()}', fecha_final= '{$prestamo->getFechaFinal()}' WHERE id = {$prestamo->getId()}";
         $this->conexion->query($consulta);
         
     }

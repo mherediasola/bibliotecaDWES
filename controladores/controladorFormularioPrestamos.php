@@ -16,6 +16,7 @@ require_once("../modelos/BBDD/Ejemplares.php");
 $ejemplares = new Ejemplares();
 $array_ejemplares = $ejemplares->consultarTodo();
 
+require_once("../modelos/pojos/Prestamo.php");
 $prestamo="";
 if(isset($_REQUEST['id'])){
     require_once("../modelos/BBDD/Prestamos.php");

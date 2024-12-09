@@ -33,31 +33,15 @@
             <th>Autor(es)</th>
             <th>Préstamo</th>
             <th>Vencimiento</th>
-            <?php 
-                if($_SESSION['usuario']['id_rol'] != 3){
-                  echo("<th></th>");
-                  echo ("<th></th>");
-                }
-                ?>
-                <?php foreach($array_prestamos as $prestamo) : ?>
-                  <tr>
-                      <td><?= $prestamo->getId(); ?></td>
-                      <td><?= $prestamo->getUsuario(); ?></td>
-                      <td><?= $prestamo->getNombreUsuario(); ?></td>
-                      <td><?= $prestamo->getEjemplar(); ?></td>
-                      <td><?= $prestamo->getAutor(); ?></td>
-                      <td><?= $prestamo->getFecha(); ?></td>
-                      <td><?= $prestamo->getFechaFinal(); ?></td>
-                      <?php 
-                        if($_SESSION['usuario']['id_rol'] != 3){
-                          ?>
-                          <td><a href='/controladores/controladorFormularioPrestamos.php?id= <?= $prestamo->getId(); ?>' class='btn btn-secondary'><i class='fa-regular fa-pen-to-square'></i></a></td>
-                          <td><a href='/controladores/controladorEliminarPrestamos.php?id=<?= $prestamo->getId(); ?>' class='btn btn-danger'><i class='fa-solid fa-trash'></i></a></td>
-                      <?php
-                      }
-                      ?>
-                  </tr>
-                <?php endforeach ?>   
+                <tr>
+                    <td><?= $prestamo->getId(); ?></td>
+                    <td><?= $prestamo->getUsuario(); ?></td>
+                    <td><?= $prestamo->getNombreUsuario(); ?></td>
+                    <td><?= $prestamo->getEjemplar(); ?></td>
+                    <td><?= $prestamo->getAutor(); ?></td>
+                    <td><?= $prestamo->getFecha(); ?></td>
+                    <td><?= $prestamo->getFechaFinal(); ?></td>
+                </tr>
         </table>
       </div>
     </main>

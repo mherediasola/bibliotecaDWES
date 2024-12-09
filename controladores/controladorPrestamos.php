@@ -15,14 +15,15 @@ if($_SESSION['usuario']){
         require_once("../modelos/pojos/Prestamo.php");
         $prestamo = new Prestamo();
         $prestamo = $prestamos->consultarCoincideId($_SESSION['usuario']['id']);
+        include("../vistas/misPrestamos.php");
+    }else{
+        include("../vistas/prestamos.php");
     }
   }
-
-  
 
 //Cerrar BBDD
 $prestamos->finalizarConexion();
 
-include("../vistas/prestamos.php");
+
 
 ?>
